@@ -26,7 +26,7 @@ Item {
     }
 
     function repeatForPage(page, callback) {
-        var params = _.lastParamMap
+        var params = _.lastParamsMap
         params.page = page
         _.sendRequest(params, callback)
     }
@@ -36,7 +36,7 @@ Item {
 
         property var lastParamsMap: ({})
 
-        readonly property string  serverUrl: "http://api.nestoria.co.uk/api?country=uk&pretty=1&encoding=json&listing_type=buy"
+        readonly property string  serverUrl: "https://api.nestoria.com.br/api?encoding=json&pretty=1&country=br&listing_type=buy"
 
 
         function buildUrl(paramMap) {

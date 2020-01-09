@@ -97,14 +97,14 @@ Item {
 
         onActiveChanged: {
             var coord = position.coordinate
-            console.log("Coordinates:", coord.latitude, coord.longitude,
+            console.log("Coordenates:", coord.latitude, coord.longitude,
                         "valid:", coord.isValid,
                         "source active:", active)
 
             if(!active) {
-                if (coord.isValid && _locationSearchPending) {
+                if (coord.isValid && _.locationSearchPending) {
                     _.searchByLocation()
-                    _.loacationSearchPending = false
+                    _.locationSearchPending = false
                 }
             }
         }
@@ -147,14 +147,18 @@ Item {
         function responseCallback(obj) {
             var response = obj.response
             var code = response.application_response_code
-            console.debug("Server returned application code:",code)
+            console.debug("Server returned application code: ",code)
+
             if(successCodes.indexOf(code) >= 0) {
                 currentPage = parseInt(response.page)
                 listings = listings.concat(response.listings)
+                listingsReceived()
                 numTotalListings = response.total_results || 0
                 console.debug("Server returned", response.listings.length, "listings")
-                addRecentSearch(qsTr("%1 (%2listings)").args(lastSearchText).arg(response.location.length))
+                addRecentSearch(qsTr("%1 (%2 listings)").arg(lastSearchText).arg(numTotalListings))
                 locationSource = locationSourceSuggested
+            } else if (ambiguousCodes.indexOf(code) >= 0) {
+                locations = response.locations
             }
             else if(code === "210") {
                 locations = []
@@ -181,7 +185,7 @@ Item {
         function createRecentSearchesModel() {
             return Object.keys(recentSearches).map(function(text) {
                 return {
-                    heading: "Buscas recetes",
+                    heading: "Buscas recentes",
                     text: recentSearches[text].displayText,
                     searchText: text
                 }
@@ -207,6 +211,7 @@ Item {
                 recentSearches[lastSearchText] = {
                     displayText: displayText
                 }
+                console.debug("add recente")
                 _.recentSearchesChanged()
             }
         }

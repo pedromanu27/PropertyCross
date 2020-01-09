@@ -25,7 +25,7 @@ ListPage {
 
     title: favorites
            ? qsTr("Favoritos")
-           : qsTr("%1 de %2 resultados")
+           : qsTr("%1 de %2 resultados").arg(dataModel.numListings).arg(dataModel.numTotalListings)
 
     emptyText.text: favorites
                     ? qsTr("Você não adicionou nenhuma propriedade aos seus favoritos.")

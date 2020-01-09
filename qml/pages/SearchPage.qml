@@ -48,7 +48,7 @@ Page {
             width: parent.width
 
             showClearButton: true
-            placeholderText: qsTr("Buscar")
+            placeholderText: qsTr("Cidade")
             inputMethodHints: Qt.ImhNoPredictiveText
 
             onTextChanged: showRecentSearches()
@@ -59,7 +59,7 @@ Page {
             spacing: contentPadding
 
             AppButton {
-                text: qsTr("Ir")
+                text: qsTr("Buscar")
                 onClicked: search()
             }
 
@@ -111,7 +111,7 @@ Page {
     Connections {
         target: dataModel
         onListingsReceived: showListings(false)
-        onLocationReceived: if (searchInput.placeholderText == "Procurando localização...") searchInput.placeholderText = "Buscar"
+        onLocationReceived: if (searchInput.placeholderText === "Procurando localização...") searchInput.placeholderText = "Buscar"
     }
 
     Component {
@@ -120,6 +120,8 @@ Page {
     }
 
     function showListings(favorites) {
+
+        console.debug("Chegou aqui")
         if (navigationStack.depth === 1) {
             navigationStack.popAllExceptFirstAndPush(listPageComponent, {favorites: favorites})
         }
